@@ -1,5 +1,6 @@
 import re
 import webbrowser
+import numpy as np
 
 
 class Article:
@@ -149,12 +150,15 @@ references_list = {
     9: ["Art. 89(1)"],
     10: ["Art. 6(1)"],
     11: ["Articles 15-20"],
-    12: ["Art. 11", "Art. 13", "Art. 14", "Art. 15", "Art. 16", "Art. 17", "Art. 18", "Art. 19", "Art. 20", "Art. 21", "Art. 22", "Art. 34", "Art. 92"],
+    12: ["Art. 11", "Art. 13", "Art. 14", "Art. 15", "Art. 16", "Art. 17", "Art. 18", "Art. 19", "Art. 20", "Art. 21",
+         "Art. 22", "Art. 34", "Art. 92"],
     13: ["Art. 6(1)(f)", "Art. 46", "Art. 47", "Art. 49(1)", "Art. 6(1)(a)", "Art. 9(2)(a)", "Art. 22(1) and 22(4)"],
-    14: ["Art. 6(1)(f)", "Art. 46", "Art. 47", "Art. 49(1)", "Art. 6(1)(a)", "Art. 9(2)(a)", "Art. 22(1) and 22(4)", "Art. 89(1)"],
+    14: ["Art. 6(1)(f)", "Art. 46", "Art. 47", "Art. 49(1)", "Art. 6(1)(a)", "Art. 9(2)(a)", "Art. 22(1) and 22(4)",
+         "Art. 89(1)"],
     15: ["Art. 22(1) and 22(4)", "Art. 46"],
     16: [],
-    17: ["Art. 6(1)(a)", "Art. 8(1)", "Art. 9(2)(a) and Art. 9(2)(h) and Art. 9(2)(i) and Art. 9(3)", "Art. 21(1) and 21(2)", "Art. 89(1)"],
+    17: ["Art. 6(1)(a)", "Art. 8(1)", "Art. 9(2)(a) and Art. 9(2)(h) and Art. 9(2)(i) and Art. 9(3)",
+         "Art. 21(1) and 21(2)", "Art. 89(1)"],
     18: ["Art. 21(1)"],
     19: ["Art. 16", "Art. 17(1)", "Art. 18"],
     20: ["Art. 6(1)(a)", "Art. 9(2)(a)", "Art. 6(1)(b)", "Art. 17"],
@@ -165,7 +169,8 @@ references_list = {
     25: ["Art. 42"],
     26: ["Art. 13", "Art. 14"],
     27: ["Art. 3(2)", "Art. 9(1)", "Art. 10"],
-    28: ["Art. 32", "Chapter III (Articles 12-23)", "Articles 32-36", "Art. 40", "Art. 42", "Art. 43", "Art. 63", "Art. 82", "Art. 83", "Art. 84" "Art. 93(2)"],
+    28: ["Art. 32", "Chapter III (Articles 12-23)", "Articles 32-36", "Art. 40", "Art. 42", "Art. 43", "Art. 63",
+         "Art. 82", "Art. 83", "Art. 84", "Art. 93(2)"],
     29: [],
     30: ["Art. 9(1)", "Art. 10", "Art. 32(1)", "Art. 49(1)"],
     31: [],
@@ -177,10 +182,12 @@ references_list = {
     37: ["Art. 9", "Art. 10", "Art. 39"],
     38: ["Art. 39"],
     39: ["Art. 35", "Art. 36"],
-    40: ["Art. 3", "Art. 24", "Art. 25", "Art. 32", "Art. 41(1)", "Art. 46(2)(e)", "Art. 55", "Art. 56", "Art. 63", "Art. 77", "Art. 79", "Art. 93(2)"],
+    40: ["Art. 3", "Art. 24", "Art. 25", "Art. 32", "Art. 41(1)", "Art. 46(2)(e)", "Art. 55", "Art. 56", "Art. 63",
+         "Art. 77", "Art. 79", "Art. 93(2)"],
     41: ["Art. 40", "Art. 57", "Art. 58", "Art. 63", "Chapter VIII (Articles 77-84)"],
     42: ["Art. 3", "Art. 43", "Art. 46(2)(f)", "Art. 55", "Art. 56", "Art. 58(3)", "Art. 63"],
-    43: ["Art. 42(1) and Art. 42(5)", "Art. 55", "Art. 56", "Art. 57", "Art. 58", "Art. 63", "Chapter VIII (Articles 77-84)", "Art. 92", "Art. 93(2)"],
+    43: ["Art. 42(1) and Art. 42(5)", "Art. 55", "Art. 56", "Art. 57", "Art. 58", "Art. 63",
+         "Chapter VIII (Articles 77-84)", "Art. 92", "Art. 93(2)"],
     44: [],
     45: ["Art. 93(2) and 93(3)", "Articles 46-49"],
     46: ["Art. 40", "Art. 42", "Art. 45(3)", "Art. 47", "Art. 63", "Art. 93(2)"],
@@ -194,20 +201,26 @@ references_list = {
     54: [],
     55: ["Art. 6(1)(c) and Art. 6(1)(e)", "Art. 56"],
     56: ["Art. 55", "Art. 60", "Art. 61", "Art. 62"],
-    57: ["Art. 28(8)", "Art. 35(4)", "Art. 36(2)", "Art. 40(1) and Art. 40(5)", "Art. 41", "Art. 42(1) and Art. 42(5) and Art. 42(7)", "Art. 43", "Art. 46(2)(d) and Art. 46(3)", "Art. 47", "Art. 58(2)", "Art. 80"],
-    58: ["Art. 16", "Art. 17", "Art. 18", "Art. 19", "Art. 28(8)", "Art. 36", "Art. 40(5)", "Art. 42", "Art. 43", "Art. 46(2)(d) and Art. 46(3)(a) and Art. 46(3)(b)", "Art. 47", "Chapter VII (Articles 60-76)", "Art. 83"],
+    57: ["Art. 28(8)", "Art. 35(4)", "Art. 36(2)", "Art. 40(1) and Art. 40(5)", "Art. 41",
+         "Art. 42(1) and Art. 42(5) and Art. 42(7)", "Art. 43", "Art. 46(2)(d) and Art. 46(3)", "Art. 47", "Art. 58(2)",
+         "Art. 80"],
+    58: ["Art. 16", "Art. 17", "Art. 18", "Art. 19", "Art. 28(8)", "Art. 36", "Art. 40(5)", "Art. 42", "Art. 43",
+         "Art. 46(2)(d) and Art. 46(3)(a) and Art. 46(3)(b)", "Art. 47", "Chapter VII (Articles 60-76)", "Art. 83"],
     59: ["Art. 58(2)"],
     60: ["Art. 61", "Art. 62", "Art. 63", "Art. 66"],
     61: ["Art. 55(1)", "Art. 66(1) and Art. 66(2)", "Art. 93(2)"],
     62: ["Art. 55", "Art. 56(1) and Art. 56(4)", "Art. 66(1) and Art. 66(2)"],
     63: [],
-    64: ["Art. 28(8)", "Art. 35(4)", "Art. 40(7)", "Art. 41(3)", "Art. 42(5)", "Art. 43(3)", "Art. 46(2)(d) and Art. 46(3)(a)", "Art. 47", "Art. 61", "Art. 62", "Art. 65(1)"],
+    64: ["Art. 28(8)", "Art. 35(4)", "Art. 40(7)", "Art. 41(3)", "Art. 42(5)", "Art. 43(3)",
+         "Art. 46(2)(d) and Art. 46(3)(a)", "Art. 47", "Art. 61", "Art. 62", "Art. 65(1)"],
     65: ["Art. 60(4) and Art. 60(7) and Art. 60(8) and Art. 60(9)", "Art. 64"],
     66: ["Art. 60", "Art. 63", "Art. 64", "Art. 65"],
     67: ["Art. 64", "Art. 93(2)"],
     68: ["Art. 65"],
     69: ["Art. 70", "Art. 71"],
-    70: ["Art. 12(7)", "Art. 17(2)", "Art. 22(2)(e)", "Art. 33(1) and Art. 33(2)", "Art. 34(1)", "Art. 40", "Art. 42", "Art. 43", "Art. 47", "Art. 49(1)", "Art. 54(2)", "Art. 58(1) and Art. 58(2) and Art. 58(3)", "Art. 64", "Art. 65", "Art. 66", "Art. 76", "Art. 83", "Art. 93"],
+    70: ["Art. 12(7)", "Art. 17(2)", "Art. 22(2)(e)", "Art. 33(1) and Art. 33(2)", "Art. 34(1)", "Art. 40", "Art. 42",
+         "Art. 43", "Art. 47", "Art. 49(1)", "Art. 54(2)", "Art. 58(1) and Art. 58(2) and Art. 58(3)", "Art. 64",
+         "Art. 65", "Art. 66", "Art. 76", "Art. 83", "Art. 93"],
     71: ["Art. 65", "Art. 70(1)(l)"],
     72: [],
     73: [],
@@ -220,9 +233,13 @@ references_list = {
     80: ["Art. 77", "Art. 78", "Art. 79", "Art. 82"],
     81: [],
     82: ["Art. 79(2)"],
-    83: ["Art. 5", "Art. 6", "Art. 7", "Art. 8", "Art. 9", "Art. 11", "Articles 12-22", "Art. 25", "Art. 32", "Art. 39", "Art. 40", "Art. 41(4)", "Art. 42", "Art. 43", "Articles 44-49", "Art. 58(1) and Art. 58(2)", "Chapter IX (Articles 85-91)"],
+    83: ["Art. 5", "Art. 6", "Art. 7", "Art. 8", "Art. 9", "Art. 11", "Articles 12-22", "Art. 25", "Art. 32", "Art. 39",
+         "Art. 40", "Art. 41(4)", "Art. 42", "Art. 43", "Articles 44-49", "Art. 58(1) and Art. 58(2)",
+         "Chapter IX (Articles 85-91)"],
     84: ["Art. 83"],
-    85: ["Chapter II (Articles 5-11)", "Chapter III (Articles 12-23)", "Chapter IV (Articles 24-43)", "Chapter V (Articles 44-50)", "Chapter VI (Articles 51-59)", "Chapter VII (Articles 60-76)", "Chapter IX (Articles 85-91)"],
+    85: ["Chapter II (Articles 5-11)", "Chapter III (Articles 12-23)", "Chapter IV (Articles 24-43)",
+         "Chapter V (Articles 44-50)", "Chapter VI (Articles 51-59)", "Chapter VII (Articles 60-76)",
+         "Chapter IX (Articles 85-91)"],
     86: [],
     87: [],
     88: [],
@@ -239,6 +256,38 @@ references_list = {
     99: []
 }
 
+graph_matrix = np.zeros((100, 100), dtype=int)
+
+
+def setup_graph_matrix(article_with_references: dict[int, Article]):
+    for article_number, article in article_with_references.items():
+        graph_matrix[0][article_number] = int(article_number)
+        graph_matrix[article_number][0] = int(article_number)
+        if article.references:
+            for reference in article.references:
+                regex1 = r"^Art.\ \d+"
+                regex2 = r"Articles \d+-\d+"
+                match1 = re.search(pattern=regex1, string=reference)
+                if match1:
+                    match1 = match1.string
+                    match1 = re.sub(r"\(.+\)", "", match1)
+                    match1 = re.sub(r"\D", "", match1)
+                    reference_number = int(match1)
+                    graph_matrix[article_number][reference_number] = 1
+                else:
+                    match2 = re.search(pattern=regex2, string=reference)
+                    if match2:
+                        match2 = match2.string
+                        match2 = re.sub(r"[^\d+\-\d+]", "", match2)
+                        match2 = match2.split("-")
+                        candidate_number1 = int(match2[0])
+                        candidate_number2 = int(match2[1])
+                        for i in range(candidate_number1, candidate_number2 + 1):
+                            graph_matrix[article_number][i] = 1
+    print("Graph matrix has been set up.\n")
+    with np.printoptions(threshold=np.inf):
+        print(graph_matrix)
+
 
 def setup_articles_with_references() -> dict[int, Article]:
     articles_with_references = {}
@@ -246,6 +295,7 @@ def setup_articles_with_references() -> dict[int, Article]:
         if value.number in references_list:
             value.references = references_list[value.number]
         articles_with_references[value.number] = value
+    setup_graph_matrix(articles_with_references)
     return articles_with_references
 
 
