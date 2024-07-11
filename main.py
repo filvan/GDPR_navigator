@@ -19,6 +19,7 @@ class Article:
             print(f"Article {self.number}: {self.name}.")
 
 
+"""
 class Reference:
     def __init__(self, source, destination, kind):
         self.source = source
@@ -27,7 +28,7 @@ class Reference:
 
     def print_reference(self):
         print(f"Reference from {self.source} to {self.destination} of kind {self.kind}")
-
+"""
 
 articles_list = {
     1: Article(1, "Subject-matter and objectives"),
